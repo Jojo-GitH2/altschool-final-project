@@ -25,5 +25,5 @@ jobs:
       run: |
         cp $ENV_FILE .env.example
         bash laravel_test.sh
-      working_directory: laravel-app
+      working-directory: laravel-app
 
