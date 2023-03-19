@@ -1,0 +1,29 @@
+name: Deploy to Kubernetes Cluster
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+env:
+  IMAGE_NAME: jojodocker10/laravel-application
+  IMAGE_TAG: latest
+
+jobs:
+  test-laravel-app:
+    runs-on: ubuntu-latest
+    env:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+    services:
+      mysql:
+        image: mysql:5:7
+        alias: db
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Install and setup laravel dependencies
+      run: |
+        cp $ENV_FILE .env.example
+        bash laravel_test.sh
+      working_directory: laravel-app
+
