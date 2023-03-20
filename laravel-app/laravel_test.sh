@@ -32,7 +32,7 @@ cd /var/www/html/laravel-realworld-example-app/
 
 sudo composer create-project --no-interaction
 
-ln -s /etc/nginx/sites-available/laravel /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/laravel /etc/nginx/sites-enabled/
 
 sudo rm /etc/nginx/sites-enabled/default
 
