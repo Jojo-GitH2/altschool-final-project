@@ -55,7 +55,8 @@ doctl kubernetes cluster kubeconfig save $(terraform output -raw k8s_name)
 # run the following commands to deploy the microservice demo
 
 # run the
-kubectl create -f complete-demo.yaml
+kubectl create -f sock-shop-kubernetes.yaml
+kubectl create -f app-voting-kubernetes.yaml
 
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -70,4 +71,7 @@ kubectl expose service prometheus-server --type=LoadBalancer --target-port=9090 
 
 $(sleep 180)
 kubectl get service front-end -n sock-shop
+kubectl get service result-service -n voting-application
+kubectl get service voting-service -n voting-application
+kubectl get service prometheus-server-ext
 kubectl get service prometheus-server-ext
