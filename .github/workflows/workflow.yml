@@ -1,29 +1,41 @@
-name: Deploy to Kubernetes Cluster
+name: Build Laravel Project
+
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-env:
-  IMAGE_NAME: jojodocker10/laravel-application
-  IMAGE_TAG: latest
-  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-  MYSQL_DATABASE: ${{ vars.MYSQL_DATABASE }}
-  MYSQL_USER: ${{ vars.MYSQL_USER }}
+    branches: [ main ]
 
 jobs:
-  test-laravel-app:
+  build:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:8.0
+        env:
+          MYSQL_DATABASE:  ${{ vars.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ vars.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Install and setup laravel dependencies
-      run: |
-        echo "Running Scripts....."
-        bash laravel_test.sh
-      working-directory: laravel-app
-
+    - uses: actions/checkout@v2
+    - name: Set up PHP environment
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+    - name: Install dependencies
+      run: composer install
+    - name: Run tests
+      run: php artisan test
+    - name: Build project
+      run: php artisan build
+    - name: Set up Nginx
+      uses: docker/compose@v2
+      with:
+        compose-file: docker-compose.yml
+        nginx-config: ./nginx.conf
+    - name: Run Nginx and MySQL
+      run: docker-compose up -d
