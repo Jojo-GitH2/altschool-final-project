@@ -22,7 +22,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Install and setup laravel dependencies
       run: |
-        cat ${{ secrets.ENV_FILE }} > .env.example
+        cp ${{ secrets.ENV_FILE }} .env.example
         bash laravel_test.sh
       working-directory: laravel-app
 
