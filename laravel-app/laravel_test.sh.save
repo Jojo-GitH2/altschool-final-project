@@ -23,7 +23,7 @@ sudo apt-get install composer -y
 
 sudo cp ./php.ini /etc/php/8.0/fpm/php.ini
 
-sudo cp ./laravel.conf /etc/nginx/sites-available/laravel
+sudo cp ./laravel /etc/nginx/sites-available/laravel
 
 sudo cp ./web.php /var/www/html/laravel-realworld-example-app/routes/web.php
 
