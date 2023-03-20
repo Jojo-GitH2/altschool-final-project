@@ -20,17 +20,17 @@ sudo cp ./web.php /var/www/html/laravel-realworld-example-app/routes/web.php
 
 cd /var/www/html/
 
-chown -R www-data:www-data /var/www/html/laravel-realworld-example-app/ \
-    && chmod -R 775 /var/www/html/laravel-realworld-example-app/
+sudo chown -R www-data:www-data /var/www/html/laravel-realworld-example-app/ \
+    && sudo chmod -R 775 /var/www/html/laravel-realworld-example-app/
 
 curl -sS https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer
 
-update-alternatives --set php /usr/bin/php8.1
+sudo update-alternatives --set php /usr/bin/php8.1
 
 cd /var/www/html/laravel-realworld-example-app/
 
-composer create-project --no-interaction
+sudo composer create-project --no-interaction
 
 ln -s /etc/nginx/sites-available/laravel /etc/nginx/sites-enabled/
 
