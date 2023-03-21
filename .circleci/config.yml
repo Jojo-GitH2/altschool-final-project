@@ -194,33 +194,32 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            kubectl apply -f Project/netes_sock-shop/manifests-monitoring/      
+            kubectl apply -f sock-shop-kubernetes/manifests-monitoring/      
             
 workflows:
   version: 2
   project:
     jobs:
-      - prometheus
-    #    - init
-    #    - plan:
-    #        requires: [init]
-    #    - hold-apply:
-    #        type: approval
-    #        requires: [plan]
-    #    - apply:
-    #        requires: [hold-apply]
-    #    - plan-destroy:
-    #        requires: [apply]
-    #    - hold-destroy:
-    #        type: approval
-    #        requires: [plan-destroy]
-    #    - destroy:
-    #        requires: [hold-destroy]  
-#       - build-my-app:
- #           requires: [apply]
- #      - deploy-my-app:
- #          requires: [apply]
-   #    - sock-shop:
-   #        requires: [apply]
-        
- #          requires: [apply]
+        - init
+        - plan:
+            requires: [init]
+        - hold-apply:
+            type: approval
+            requires: [plan]
+        - apply:
+            requires: [hold-apply]
+        - plan-destroy:
+            requires: [apply]
+        - hold-destroy:
+            type: approval
+            requires: [plan-destroy]
+        - destroy:
+            requires: [hold-destroy]  
+        # - build-my-app:
+        #     requires: [apply]
+        - deploy-my-app:
+            requires: [apply]
+        - sock-shop:
+            requires: [apply]
+        - prometheus:
+            requires: [apply]
