@@ -250,7 +250,7 @@ workflows:
             requires: [apply]
         - deploy-my-app:
             requires: [apply]
-        - sock-shop
+        - sock-shop:
             requires: [apply]
-        - prometheus
+        - prometheus:
             requires: [apply]
