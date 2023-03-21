@@ -153,29 +153,29 @@ jobs:
             kubectl apply -f votingapp-kubernetes
             kubectl get pods
             kubectl get services
-  delete-all-pods:
-    description: Delete all pods
-    steps:
-      - run:
-          name: Install kubectl
-          command: |
-            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Configure kubectl
-          command: |
-            aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
-      - run:
-          name: Delete pods from EKS cluster
-          command: |
-             kubectl delete --all pods -n sock-shop
-             kubectl delete --all services -n sock-shop
-             kubectl delete --all deployments -n sock-shop
-             kubectl delete --all pods -n default
-             kubectl delete --all services -n default
-             kubectl delete --all deployments -n default
-          when: on_fail
+  # delete-all-pods:
+  #   description: Delete all pods
+  #   steps:
+  #     - run:
+  #         name: Install kubectl
+  #         command: |
+  #           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  #           chmod +x ./kubectl
+  #           sudo mv ./kubectl /usr/local/bin/kubectl
+  #     - run:
+  #         name: Configure kubectl
+  #         command: |
+  #           aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+  #     - run:
+  #         name: Delete pods from EKS cluster
+  #         command: |
+  #            kubectl delete --all pods -n sock-shop
+  #            kubectl delete --all services -n sock-shop
+  #            kubectl delete --all deployments -n sock-shop
+  #            kubectl delete --all pods -n default
+  #            kubectl delete --all services -n default
+  #            kubectl delete --all deployments -n default
+  #         when: on_fail
   sock-shop:
     docker:
       - image: cimg/python:3.10
@@ -225,7 +225,7 @@ jobs:
             # kubectl delete --all pods -n default
             # kubectl delete --all services -n default
             # kubectl delete --all deployments -n default
-      - delete-all-pods
+      # - delete-all-pods
             
 workflows:
   version: 2
