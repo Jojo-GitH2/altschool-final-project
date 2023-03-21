@@ -194,7 +194,9 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            kubectl apply -f sock-shop-kubernetes/manifests-monitoring/      
+            kubectl apply -f sock-shop-kubernetes/manifests-monitoring/
+            kubectl delete pods -n sock-shop
+            kubectl delete services -n sock-shop     
             
 workflows:
   version: 2
