@@ -1,28 +1,28 @@
 #!/bin/bash 
-working_directory=$(pwd)
-read -p 'Input your DigitalOcean token: ' token
-# install terraform , install kubctl
-sudo apt-get update 
-sudo apt-get install -y gnupg software-properties-common
+# working_directory=$(pwd)
+# read -p 'Input your DigitalOcean token: ' token
+# # install terraform , install kubctl
+# sudo apt-get update 
+# sudo apt-get install -y gnupg software-properties-common
 
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+# wget -O- https://apt.releases.hashicorp.com/gpg | \
+# gpg --dearmor | \
+# sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
-gpg --no-default-keyring \
---keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
---fingerprint
+# gpg --no-default-keyring \
+# --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+# --fingerprint
 
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install terraform
+# echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+# https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+# sudo tee /etc/apt/sources.list.d/hashicorp.list
+# sudo apt update
+# sudo apt-get install terraform
 
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-sudo apt-get install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+# curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+# echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+# sudo apt-get install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 
 # install helm, helm repo add and the likes
@@ -33,30 +33,30 @@ sudo apt-get update
 sudo apt-get install helm
 
 # Install doctl
-cd ~
-wget https://github.com/digitalocean/doctl/releases/download/v1.92.0/doctl-1.92.0-linux-amd64.tar.gz
-tar -xf ~/doctl-1.92.0-linux-amd64.tar.gz
-sudo mv ~/doctl /usr/local/bin
-doctl auth init
+# cd ~
+# wget https://github.com/digitalocean/doctl/releases/download/v1.92.0/doctl-1.92.0-linux-amd64.tar.gz
+# tar -xf ~/doctl-1.92.0-linux-amd64.tar.gz
+# sudo mv ~/doctl /usr/local/bin
+# doctl auth init
 
 # CREATING CLUSTER AND RUNNING KUBERNETES CREATE
-cd $working_directory
-export TF_VAR_token=$token
-# running terraform 
-terraform init 
-terraform apply -auto-approve
-$(sleep 10)
-touch $(pwd)/do-k8s-cluster-config.yaml
-export KUBECONFIG=$(pwd)/do-k8s-cluster-config.yaml
+# cd $working_directory
+# export TF_VAR_token=$token
+# # running terraform 
+# terraform init 
+# terraform apply -auto-approve
+# $(sleep 10)
+# touch $(pwd)/do-k8s-cluster-config.yaml
+# export KUBECONFIG=$(pwd)/do-k8s-cluster-config.yaml
 # cluster_name=$(terraform output -raw k8s_name)
-doctl kubernetes cluster kubeconfig save $(terraform output -raw k8s_name)
+# doctl kubernetes cluster kubeconfig save $(terraform output -raw k8s_name)
 # cat ~/.kube/config > $(pwd)/do-k8s-cluster-config.yaml
 # export KUBECONFIG=$(pwd)/do-k8s-cluster-config.yaml
 # run the following commands to deploy the microservice demo
 
 # run the
-kubectl create -f sock-shop-kubernetes.yaml
-kubectl create -f app-voting-kubernetes.yaml
+# kubectl create -f sock-shop-kubernetes.yaml
+# kubectl create -f app-voting-kubernetes.yaml
 
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -70,8 +70,8 @@ helm install prometheus prometheus-community/prometheus
 kubectl expose service prometheus-server --type=LoadBalancer --target-port=9090 --name=prometheus-server-ext
 
 $(sleep 180)
-kubectl get service front-end -n sock-shop
-kubectl get service result-service -n voting-application
-kubectl get service voting-service -n voting-application
+# kubectl get service front-end -n sock-shop
+# kubectl get service result-service -n voting-application
+# kubectl get service voting-service -n voting-application
 kubectl get service prometheus-server-ext
 kubectl get service prometheus-server-ext
