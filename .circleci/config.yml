@@ -194,8 +194,8 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            # kubectl create namespace sock-shop
-            kubectl apply -f sock-shop-kubernetes
+            kubectl create namespace sock-shop
+            kubectl apply -f kubernetes-sock-shop
             kubectl get services -n sock-shop
 
   prometheus:
@@ -217,7 +217,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            kubectl apply -f sock-shop-kubernetes/manifests-monitoring/
+            kubectl apply -f kubernetes-sock-shop/manifests-monitoring/
             # kubectl delete --all pods -n sock-shop
             # kubectl delete --all services -n sock-shop
             # kubectl delete --all deployments -n sock-shop
