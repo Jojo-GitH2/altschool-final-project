@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.1.4
   terraform: circleci/terraform@3.2.0
-  slack: circleci/slack@4.10.1
 commands:
   install_awscli:
       description: Install AWS CLI v2
@@ -88,17 +87,17 @@ jobs:
             cd terraform-kubernetes/
             terraform apply -auto-approve terraform-destroy       
    
-  stop:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: terraform destroy
-          command: |
-            cd terraform-kubernetes/
-            terraform apply -auto-approve terraform-destroy
+  # stop:
+  #   docker:
+  #     - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - run:
+  #         name: terraform destroy
+  #         command: |
+  #           cd terraform-kubernetes/
+  #           terraform apply -auto-approve terraform-destroy
       
   build-my-app:
     docker:
@@ -246,10 +245,10 @@ workflows:
             requires: [plan-destroy]
         - destroy:
             requires: [hold-destroy]  
-        - build-my-app:
-            requires: [apply]
-        - deploy-my-app:
-            requires: [apply]
+        # - build-my-app:
+        #     requires: [apply]
+        # - deploy-my-app:
+        #     requires: [apply]
         - sock-shop:
             requires: [apply]
         - prometheus:
