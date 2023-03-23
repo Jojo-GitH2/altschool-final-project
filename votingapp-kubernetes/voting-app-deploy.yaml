@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: voting-app
-        image: kodekloud/examplevotingapp_vote:v1
+        image: jojodocker10/CICD_app:v1
         ports:
         - containerPort: 80
 

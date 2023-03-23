@@ -119,12 +119,12 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            cd votingapp-kubernetes/  
+            cd voting-app/vote
             docker build -t voting-app .
       - run:
           name: Push to Docker Hub
           command: |
-            cd votingapp-kubernetes/
+            cd voting-app/vote
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag $APP:latest $DOCKER_USERNAME/$APP
@@ -149,7 +149,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            kubectl apply -f votingapp-kubernetes
+            kubectl apply -f voting-app
             kubectl get pods
             kubectl get services
   # delete-all-pods:
