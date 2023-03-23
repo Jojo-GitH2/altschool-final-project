@@ -227,32 +227,30 @@ jobs:
             # kubectl delete --all deployments -n default
       # - delete-all-pods
             
-workflows:
-  version: 2
-  deploy-apps:
-    jobs:
-        - init
-        - plan:
-            requires: [init]
-        - hold-apply:
-            type: approval
-            requires: [plan]
-        - apply:
-            requires: [hold-apply]
-        - plan-destroy:
-            requires: [apply, sock-shop, prometheus] 
-        - hold-destroy:
-            type: approval
-            requires: [plan-destroy]
-        - destroy:
-            requires: [hold-destroy]  
-        # - build-my-app:
-        #     requires: [apply]
-        # - deploy-my-app:
-        #     requires: [apply]
-        - sock-shop:
-            requires: [apply]
-        - prometheus:
-            requires: [apply]
-
-            #
+# workflows:
+#   version: 2
+#   deploy-apps:
+#     jobs:
+#         - init
+#         - plan:
+#             requires: [init]
+#         - hold-apply:
+#             type: approval
+#             requires: [plan]
+#         - apply:
+#             requires: [hold-apply]
+#         - plan-destroy:
+#             requires: [apply, sock-shop, prometheus] 
+#         - hold-destroy:
+#             type: approval
+#             requires: [plan-destroy]
+#         - destroy:
+#             requires: [hold-destroy]  
+#         # - build-my-app:
+#         #     requires: [apply]
+#         # - deploy-my-app:
+#         #     requires: [apply]
+#         - sock-shop:
+#             requires: [apply]
+#         - prometheus:
+#             requires: [apply]
