@@ -247,10 +247,11 @@ workflows:
             requires: [plan-destroy]
         - destroy:
             requires: [hold-destroy]  
-         - build-my-app:
-            requires: [apply]
+         - build-my-app
+             requires: [apply]
          - deploy-my-app:
-            requires: [build-my-app]
+              requires: [build-my-app]
+        #     requires: [apply]
          - sock-shop:
              requires: [apply]
          - prometheus:
