@@ -150,6 +150,7 @@ jobs:
           name: Deploy Docker image to EKS cluster
           command: |
             kubectl apply -f votingapp-kubernetes
+            sleep 150
             kubectl get pods
             kubectl get services
   # delete-all-pods:
