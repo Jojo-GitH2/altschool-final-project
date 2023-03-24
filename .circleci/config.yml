@@ -127,7 +127,7 @@ jobs:
             cd voting-app/vote
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag $APP $DOCKER_USERNAME/$APP
+            docker tag $APP:latest $DOCKER_USERNAME/$APP
             docker push $DOCKER_USERNAME/$APP
             
   deploy-my-app:
