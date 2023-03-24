@@ -120,14 +120,14 @@ jobs:
           name: Build Docker image
           command: |
             cd voting-app/vote
-            docker build -t voting-app .
+            docker build -t $APP .
       - run:
           name: Push to Docker Hub
           command: |
             cd voting-app/vote
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag $APP:latest $DOCKER_USERNAME/$APP
+            docker tag $APP $DOCKER_USERNAME/$APP
             docker push $DOCKER_USERNAME/$APP
             
   deploy-my-app:
@@ -231,26 +231,27 @@ workflows:
   version: 2
   deploy-apps:
     jobs:
-        - init
-        - plan:
-            requires: [init]
-        - hold-apply:
-            type: approval
-            requires: [plan]
-        - apply:
-            requires: [hold-apply]
-        - plan-destroy:
-            requires: [apply, sock-shop, prometheus] 
-        - hold-destroy:
-            type: approval
-            requires: [plan-destroy]
-        - destroy:
-            requires: [hold-destroy]  
-        - build-my-app:
-            requires: [apply]
-        - deploy-my-app:
-            requires: [apply]
-        - sock-shop:
-            requires: [apply]
-        - prometheus:
-            requires: [apply]
+        # - init
+        # - plan:
+        #     requires: [init]
+        # - hold-apply:
+        #     type: approval
+        #     requires: [plan]
+        # - apply:
+        #     requires: [hold-apply]
+        # - plan-destroy:
+        #     requires: [apply, sock-shop, prometheus] 
+        # - hold-destroy:
+        #     type: approval
+        #     requires: [plan-destroy]
+        # - destroy:
+        #     requires: [hold-destroy]  
+         - build-my-app
+        #     requires: [apply]
+         - deploy-my-app:
+              requires: [build-my-app]
+        #     requires: [apply]
+        # - sock-shop:
+        #     requires: [apply]
+        # - prometheus:
+        #     requires: [apply]
