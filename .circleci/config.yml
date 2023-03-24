@@ -150,9 +150,10 @@ jobs:
           name: Deploy Docker image to EKS cluster
           command: |
             kubectl apply -f votingapp-kubernetes
-            sleep 150
+            sleep 300
             kubectl get pods
             kubectl get services
+            kubectl get service voting-service -n voting-application
   # delete-all-pods:
   #   description: Delete all pods
   #   steps:
@@ -197,6 +198,7 @@ jobs:
           command: |
             kubectl create namespace sock-shop
             kubectl apply -f kubernetes-sock-shop
+            sleep 200
             kubectl get services -n sock-shop
 
   prometheus:
