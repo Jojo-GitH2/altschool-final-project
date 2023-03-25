@@ -196,6 +196,34 @@ jobs:
   #            kubectl delete --all services -n default
   #            kubectl delete --all deployments -n default
   #         when: on_fail
+
+  delete-all-pods:
+      docker:
+        - image: cimg/python:3.10
+      steps:
+        - checkout
+        - install_awscli
+        - run:
+            name: Install kubectl
+            command: |
+              curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+              chmod +x ./kubectl
+              sudo mv ./kubectl /usr/local/bin/kubectl
+        - run:
+            name: Configure kubectl
+            command: |
+              aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+        - run:
+            name: Delete from EKS cluster
+            command: |
+              # kubectl apply -f kubernetes-sock-shop/manifests-monitoring/
+              # bash setup.sh
+              kubectl delete --all pods -n sock-shop
+              kubectl delete --all services -n sock-shop
+              kubectl delete --all deployments -n sock-shop
+              kubectl delete --all pods -n default
+              kubectl delete --all services -n default
+              kubectl delete --all deployments -n default
   sock-shop:
     docker:
       - image: cimg/python:3.10
@@ -242,7 +270,7 @@ jobs:
           command: |
             aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
       - run:
-          name: Deploy Docker image to EKS cluster
+          name: Deploy image to EKS cluster
           command: |
             kubectl apply -f kubernetes-sock-shop/manifests-monitoring/
             bash setup.sh
@@ -258,27 +286,29 @@ workflows:
   version: 2
   deploy-apps:
     jobs:
-      # - init
-      # - plan:
-      #     requires: [init]
-      # - hold-apply:
-      #     type: approval
-      #     requires: [plan]
-      # - apply:
-      #     requires: [hold-apply]
-      # - plan-destroy:
-      #     requires: [apply, sock-shop, prometheus] 
-      # - hold-destroy:
-      #     type: approval
-      #     requires: [plan-destroy]
-      - destroy
-      #     requires: [hold-destroy]  
-      # - build-my-app:
-      #     requires: [apply]
-      # - deploy-my-app:
-      #     requires: [build-my-app]
-      #   #     requires: [apply]
-      # - sock-shop:
-      #     requires: [apply]
-      # - prometheus:
-      #     requires: [apply]
+      - init
+      - plan:
+          requires: [init]
+      - hold-apply:
+          type: approval
+          requires: [plan]
+      - apply:
+          requires: [hold-apply]
+      - plan-destroy:
+          requires: [apply, sock-shop, prometheus] 
+      - hold-destroy:
+          type: approval
+          requires: [plan-destroy]
+      - destroy:
+          requires: [hold-destroy]
+      - delete-all-pods:
+          requires: [hold-destroy]  
+      - build-my-app:
+          requires: [apply]
+      - deploy-my-app:
+          requires: [build-my-app]
+        #     requires: [apply]
+      - sock-shop:
+          requires: [apply]
+      - prometheus:
+          requires: [apply]
