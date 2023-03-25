@@ -82,10 +82,27 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Install kubectl
+          command: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Configure kubectl
+          command: |
+            aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+      - run:
           name: terraform destroy
           command: |
+            kubectl delete --all pods -n sock-shop
+            kubectl delete --all services -n sock-shop
+            kubectl delete --all deployments -n sock-shop
+            kubectl delete --all pods -n default
+            kubectl delete --all services -n default
+            kubectl delete --all deployments -n default 
             cd terraform-kubernetes/
-            terraform apply -auto-approve terraform-destroy       
+            terraform apply -auto-approve terraform-destroy
+            
    
   # stop:
   #   docker:
@@ -202,8 +219,10 @@ jobs:
             kubectl apply -f kubernetes-sock-shop
             sleep 200
             kubectl get services -n sock-shop
-            kubectl get svc -n sock-shop -o jsonpath='{.items[?(@.spec.type=="LoadBalancer")].status.loadBalancer.ingress[0].ip}'
-            kubectl get service -n sock-shop front-end -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+            # kubectl get svc -n sock-shop -o jsonpath='{.items[?(@.spec.type=="LoadBalancer")].status.loadBalancer.ingress[0].ip}'
+            # kubectl get service -n sock-shop front-end -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+            kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
 
 
   prometheus:
