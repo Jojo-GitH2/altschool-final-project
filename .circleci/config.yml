@@ -94,12 +94,12 @@ jobs:
       - run:
           name: terraform destroy
           command: |
-            kubectl delete --all pods -n sock-shop
-            kubectl delete --all services -n sock-shop
-            kubectl delete --all deployments -n sock-shop
-            kubectl delete --all pods -n default
-            kubectl delete --all services -n default
-            kubectl delete --all deployments -n default 
+            # kubectl delete --all pods -n sock-shop
+            # kubectl delete --all services -n sock-shop
+            # kubectl delete --all deployments -n sock-shop
+            # kubectl delete --all pods -n default
+            # kubectl delete --all services -n default
+            # kubectl delete --all deployments -n default 
             cd terraform-kubernetes/
             terraform apply -auto-approve terraform-destroy
             
