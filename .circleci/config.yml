@@ -81,6 +81,8 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - checkout
+      - install_awscli
       - run:
           name: Install kubectl
           command: |
@@ -258,27 +260,27 @@ workflows:
   version: 2
   deploy-apps:
     jobs:
-      - init
-      - plan:
-          requires: [init]
-      - hold-apply:
-          type: approval
-          requires: [plan]
-      - apply:
-          requires: [hold-apply]
-      - plan-destroy:
-          requires: [apply, sock-shop, prometheus] 
-      - hold-destroy:
-          type: approval
-          requires: [plan-destroy]
-      - destroy:
-          requires: [hold-destroy]  
-      - build-my-app:
-          requires: [apply]
-      - deploy-my-app:
-          requires: [build-my-app]
-        #     requires: [apply]
-      - sock-shop:
-          requires: [apply]
-      - prometheus:
-          requires: [apply]
+      # - init
+      # - plan:
+      #     requires: [init]
+      # - hold-apply:
+      #     type: approval
+      #     requires: [plan]
+      # - apply:
+      #     requires: [hold-apply]
+      # - plan-destroy:
+      #     requires: [apply, sock-shop, prometheus] 
+      # - hold-destroy:
+      #     type: approval
+      #     requires: [plan-destroy]
+      - destroy
+          # requires: [hold-destroy]  
+      # - build-my-app:
+      #     requires: [apply]
+      # - deploy-my-app:
+      #     requires: [build-my-app]
+      #   #     requires: [apply]
+      # - sock-shop:
+      #     requires: [apply]
+      # - prometheus:
+      #     requires: [apply]
