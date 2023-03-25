@@ -173,29 +173,78 @@ jobs:
             kubectl get service voting-service -n voting-application
             kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
-  # delete-all-pods:
-  #   description: Delete all pods
-  #   steps:
-  #     - run:
-  #         name: Install kubectl
-  #         command: |
-  #           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  #           chmod +x ./kubectl
-  #           sudo mv ./kubectl /usr/local/bin/kubectl
-  #     - run:
-  #         name: Configure kubectl
-  #         command: |
-  #           aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
-  #     - run:
-  #         name: Delete pods from EKS cluster
-  #         command: |
-  #            kubectl delete --all pods -n sock-shop
-  #            kubectl delete --all services -n sock-shop
-  #            kubectl delete --all deployments -n sock-shop
-  #            kubectl delete --all pods -n default
-  #            kubectl delete --all services -n default
-  #            kubectl delete --all deployments -n default
-  #         when: on_fail
+  configure-domain:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: Terraform init
+          command: |
+            cd terraform-domain/
+            terraform init -input=false
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  plan-domain:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Terraform plan
+          command: |
+            cd terraform-domain/
+            terraform plan -out tf-apply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  
+  apply-domain:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Terraform apply
+          command: |
+            cd terraform-domain/
+            terraform apply -auto-approve tf-apply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  plan-destroy-domain:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform create destroy plan
+          command: |
+            cd terraform-domain/
+            terraform plan -destroy -out tf-destroy 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  destroy-domain:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform destroy
+          command: |
+            cd terraform-domain/
+            terraform apply -auto-approve tf-destroy
+      
 
   delete-all-pods:
       docker:
