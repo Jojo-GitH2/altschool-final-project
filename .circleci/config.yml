@@ -361,3 +361,19 @@ workflows:
           requires: [apply]
       - prometheus:
           requires: [apply]
+      - configure-domain:
+          requires: [sock-shop, prometheus, deploy-my-app]
+      - plan-domain:
+          requires: [configure-domain]
+      - hold-apply-domain:
+          type: approval
+          requires: [plan-domain]
+      - apply-domain:
+          requires: [hold-apply-domain]
+      - plan-destroy-domain:
+          requires: [apply-domain]
+      - hold-destroy-domain:
+          type: approval
+          requires: [plan-destroy-domain]
+      - destroy-domain:
+          requires: [hold-destroy-domain]
