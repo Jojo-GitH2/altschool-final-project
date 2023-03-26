@@ -6,14 +6,26 @@
 #   ]
 # }
 
-resource "aws_route53_zone" "sock-shop-domain" {
-  name    = "sock-shop.altschool-demo.me"
-  comment = "sock-shop domain"
+resource "aws_route53_zone" "altschool_demo_me" {
+  name    = "altschool-demo.me"
+  comment = "main domain"
 }
 
-resource "aws_route53_zone" "votingapp-domain" {
-  name    = "vote.altschool-demo.me"
-  comment = "votingapp domain"
+# resource "aws_route53_zone" "votingapp-domain" {
+#   name    = "vote.altschool-demo.me"
+#   comment = "votingapp domain"
+# }
+
+resource "aws_route53_record" "sock-shop" {
+  name = "sock-shop.altschool-demo.me"
+  type = "A"
+  zone_id = aws_route53_zone.altschool_demo_me.zone_id
+  
+  alias {
+    name                   = data.aws_lb.sock-shop-loadbalancer.dns_name
+    zone_id                = data.aws_lb.sock-shop-loadbalancer.zone_id
+    evaluate_target_health = true
+  }
 }
 
 data "aws_elb_hosted_zone_id" "elb_zone_id" {
@@ -23,24 +35,24 @@ data "aws_elb_hosted_zone_id" "elb_zone_id" {
   ]
 }
 
-resource "aws_route53_record" "sock-shop" {
-  zone_id = aws_route53_zone.sock-shop-domain.zone_id
-  name    = "sock-shop.altschool-demo.me"
-  type    = "A"
-  alias {
-    name                   = var.sock-shop-loadbalancer
-    zone_id                = data.aws_elb_hosted_zone_id.elb_zone_id.id
-    evaluate_target_health = true
-  }
-}
+# resource "aws_route53_record" "sock-shop" {
+#   zone_id = aws_route53_zone.sock-shop-domain.zone_id
+#   name    = "sock-shop.altschool-demo.me"
+#   type    = "A"
+#   alias {
+#     name                   = "sock-shop.altschool-demo.me"
+#     zone_id                = data.aws_elb_hosted_zone_id.elb_zone_id.id
+#     evaluate_target_health = true
+#   }
+# }
 
 resource "aws_route53_record" "votingapp" {
-  zone_id = aws_route53_zone.votingapp-domain.zone_id
+  zone_id = aws_route53_zone.altschool_demo_me.zone_id
   name    = "vote.altschool-demo.me"
   type    = "A"
   alias {
-    name                   = var.votingapp-loadbalancer
-    zone_id                = data.aws_elb_hosted_zone_id.elb_zone_id.id
+    name                   = data.aws_lb.votingapp-loadbalancer.dns_name
+    zone_id                = data.aws_lb.sock-shop-loadbalancer.zone_id
     evaluate_target_health = true
   }
 }
