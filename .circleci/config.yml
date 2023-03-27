@@ -175,14 +175,18 @@ jobs:
 
   configure-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform
+      - image: ubuntu:latest
     steps:
       - checkout
       - run:
           name: Install curl
+          command: sudo apt-get update && sudo apt-get install -y curl
+      - run:
+          name: Install Terraform
           command: |
-            apk add --no-cache curl
-            curl --version
+            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
+            unzip terraform_1.1.0_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -205,15 +209,18 @@ jobs:
             - .
   plan-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform
+      - image: ubuntu:latest
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           name: Install curl
+          command: sudo apt-get update && sudo apt-get install -y curl
+      - run:
+          name: Install Terraform
           command: |
-            apk add --no-cache curl
-            curl --version
+            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
+            unzip terraform_1.1.0_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -237,15 +244,18 @@ jobs:
   
   apply-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform
+      - image: ubuntu:latest
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           name: Install curl
+          command: sudo apt-get update && sudo apt-get install -y curl
+      - run:
+          name: Install Terraform
           command: |
-            apk add --no-cache curl
-            curl --version
+            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
+            unzip terraform_1.1.0_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -268,15 +278,18 @@ jobs:
             - .
   plan-destroy-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform
+      - image: ubuntu:latest
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           name: Install curl
+          command: sudo apt-get update && sudo apt-get install -y curl
+      - run:
+          name: Install Terraform
           command: |
-            apk add --no-cache curl
-            curl --version
+            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
+            unzip terraform_1.1.0_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -299,15 +312,18 @@ jobs:
             - .
   destroy-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform
+      - image: ubuntu:latest
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           name: Install curl
+          command: sudo apt-get update && sudo apt-get install -y curl
+      - run:
+          name: Install Terraform
           command: |
-            apk add --no-cache curl
-            curl --version
+            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
+            unzip terraform_1.1.0_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
