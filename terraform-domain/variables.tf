@@ -3,7 +3,7 @@ variable "sock-shop-loadbalancer" {
 
 }
 
-variable "votingapp-loadbalancer" {
+variable "voting-app-loadbalancer" {
   description = "The loadbalancer for the votingapp"
 
 }

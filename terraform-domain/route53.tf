@@ -31,7 +31,7 @@ resource "aws_route53_record" "sock-shop" {
 data "aws_elb_hosted_zone_id" "elb_zone_id" {
   depends_on = [
     data.aws_lb.sock-shop-loadbalancer,
-    data.aws_lb.votingapp-loadbalancer
+    data.aws_lb.voting-app-loadbalancer
   ]
 }
 
@@ -51,7 +51,7 @@ resource "aws_route53_record" "votingapp" {
   name    = "vote.altschool-demo.me"
   type    = "A"
   alias {
-    name                   = data.aws_lb.votingapp-loadbalancer.dns_name
+    name                   = data.aws_lb.voting-app-loadbalancer.dns_name
     zone_id                = data.aws_lb.sock-shop-loadbalancer.zone_id
     evaluate_target_health = true
   }
