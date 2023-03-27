@@ -9,6 +9,6 @@ aws kms decrypt --ciphertext-blob sock-shop.txt --output text --query Plaintext 
 aws kms decrypt --ciphertext-blob voting-app.txt --output text --query Plaintext | base64 --decode > decrypt-voting-app.txt
 
 cat decrypt-sock-shop.txt
-cat decrpyt-sock-shop.txt
+cat decrypt-voting-app.txt
 
 # aws kms decrypt --ciphertext-blob fileb://encrypted_test_file --output text --query Plaintext | base64 --decode > decrypted_test_file.txt
