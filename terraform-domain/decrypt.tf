@@ -10,10 +10,10 @@ data "aws_kms_secrets" "decrypt_arn" {
     # key_id               = data.aws_kms_key.altschool-kubernetes.key_id
   }
 
-  secret {
-    name    = "voting-app-arn"
-    payload = var.encrypted-voting-app-loadbalancer
-    # encryption_algorithm = "SYMMETRIC_DEFAULT"
-    # key_id               = data.aws_kms_key.altschool-kubernetes.key_id
-  }
+#   secret {
+#     name    = "voting-app-arn"
+#     payload = var.encrypted-voting-app-loadbalancer
+#     # encryption_algorithm = "SYMMETRIC_DEFAULT"
+#     # key_id               = data.aws_kms_key.altschool-kubernetes.key_id
+#   }
 }
