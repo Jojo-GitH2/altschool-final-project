@@ -200,7 +200,7 @@ jobs:
           name: Terraform init
           command: |
             cd terraform-domain/
-            terraform init -input=false -var="sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform init -input=false -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       - persist_to_workspace:
           root: .
           paths:
@@ -220,7 +220,7 @@ jobs:
           name: Terraform plan
           command: |
             cd terraform-domain/
-            terraform plan -out tf-apply -var="sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       - persist_to_workspace:
           root: .
           paths:
@@ -241,7 +241,7 @@ jobs:
           name: Terraform apply
           command: |
             cd terraform-domain/
-            terraform apply -auto-approve tf-apply -var="sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform apply -auto-approve tf-apply -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       - persist_to_workspace:
           root: .
           paths:
@@ -261,7 +261,7 @@ jobs:
           name: terraform create destroy plan
           command: |
             cd terraform-domain/
-            terraform plan -destroy -out tf-destroy -var="sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform plan -destroy -out tf-destroy -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       - persist_to_workspace:
           root: .
           paths:
@@ -281,7 +281,7 @@ jobs:
           name: terraform destroy
           command: |
             cd terraform-domain/
-            terraform apply -auto-approve tf-destroy -var="sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform apply -auto-approve tf-destroy -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       
 
   delete-all-pods:
