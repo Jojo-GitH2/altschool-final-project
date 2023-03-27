@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.1.4
-  terraform: circleci/terraform@3.2.0
+  # terraform: circleci/terraform@3.2.0
 commands:
   install_awscli:
       description: Install AWS CLI v2
@@ -175,18 +175,11 @@ jobs:
 
   configure-domain:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/python:3.10
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - run:
-          name: Install curl
-          command: sudo apt-get update && sudo apt-get install -y curl
-      - run:
-          name: Install Terraform
-          command: |
-            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
-            unzip terraform_1.1.0_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -209,18 +202,11 @@ jobs:
             - .
   plan-domain:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/python:3.10
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - run:
-          name: Install curl
-          command: sudo apt-get update && sudo apt-get install -y curl
-      - run:
-          name: Install Terraform
-          command: |
-            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
-            unzip terraform_1.1.0_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -244,18 +230,11 @@ jobs:
   
   apply-domain:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/python:3.10
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - run:
-          name: Install curl
-          command: sudo apt-get update && sudo apt-get install -y curl
-      - run:
-          name: Install Terraform
-          command: |
-            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
-            unzip terraform_1.1.0_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -278,18 +257,11 @@ jobs:
             - .
   plan-destroy-domain:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/python:3.10
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - run:
-          name: Install curl
-          command: sudo apt-get update && sudo apt-get install -y curl
-      - run:
-          name: Install Terraform
-          command: |
-            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
-            unzip terraform_1.1.0_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
@@ -312,18 +284,11 @@ jobs:
             - .
   destroy-domain:
     docker:
-      - image: ubuntu:latest
+      - image: cimg/python:3.10
     steps:
+      - attach_workspace:
+          at: .
       - checkout
-      - run:
-          name: Install curl
-          command: sudo apt-get update && sudo apt-get install -y curl
-      - run:
-          name: Install Terraform
-          command: |
-            curl -O https://releases.hashicorp.com/terraform/1.1.0/terraform_1.1.0_linux_amd64.zip
-            unzip terraform_1.1.0_linux_amd64.zip
-            sudo mv terraform /usr/local/bin/
       - install_awscli
       - run:
           name: Install kubectl
