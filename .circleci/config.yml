@@ -220,7 +220,8 @@ jobs:
           name: Terraform plan
           command: |
             cd terraform-domain/
-            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=sock_shop" -var="encrypted-voting-app-loadbalancer=voting_app"
+            bash decrypt.sh
+            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=<(head -1 n decrypt-sock-shop.txt)" -var="encrypted-voting-app-loadbalancer=<(head -n 1 decrypt-voting-app.txt)"
       - persist_to_workspace:
           root: .
           paths:
