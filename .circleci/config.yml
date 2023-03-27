@@ -175,7 +175,7 @@ jobs:
 
   configure-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform
     steps:
       - checkout
       - run:
@@ -205,7 +205,7 @@ jobs:
             - .
   plan-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform
     steps:
       - attach_workspace:
           at: .
@@ -237,7 +237,7 @@ jobs:
   
   apply-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform
     steps:
       - attach_workspace:
           at: .
@@ -268,7 +268,7 @@ jobs:
             - .
   plan-destroy-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform
     steps:
       - attach_workspace:
           at: .
@@ -299,7 +299,7 @@ jobs:
             - .
   destroy-domain:
     docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform
     steps:
       - attach_workspace:
           at: .
