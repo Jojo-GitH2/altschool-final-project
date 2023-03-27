@@ -178,6 +178,11 @@ jobs:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - checkout
+      - run:
+          name: Install curl
+          command: |
+            apk add --no-cache curl
+            curl --version
       - install_awscli
       - run:
           name: Install kubectl
@@ -204,6 +209,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Install curl
+          command: |
+            apk add --no-cache curl
+            curl --version
       - install_awscli
       - run:
           name: Install kubectl
@@ -231,6 +241,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Install curl
+          command: |
+            apk add --no-cache curl
+            curl --version
       - install_awscli
       - run:
           name: Install kubectl
@@ -257,6 +272,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Install curl
+          command: |
+            apk add --no-cache curl
+            curl --version
       - install_awscli
       - run:
           name: Install kubectl
@@ -283,6 +303,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Install curl
+          command: |
+            apk add --no-cache curl
+            curl --version
       - install_awscli
       - run:
           name: Install kubectl
@@ -390,33 +415,33 @@ workflows:
   version: 2
   deploy-apps:
     jobs:
-      - init
-      - plan:
-          requires: [init]
-      - hold-apply:
-          type: approval
-          requires: [plan]
-      - apply:
-          requires: [hold-apply]
-      - plan-destroy:
-          requires: [apply, sock-shop, prometheus] 
-      - hold-destroy:
-          type: approval
-          requires: [plan-destroy]
-      - destroy:
-          requires: [hold-destroy]
-      - delete-all-pods:
-          requires: [hold-destroy]  
-      - build-my-app:
-          requires: [apply]
-      - deploy-my-app:
-          requires: [build-my-app]
-      - sock-shop:
-          requires: [apply]
-      - prometheus:
-          requires: [apply]
-      - configure-domain:
-          requires: [sock-shop, prometheus, deploy-my-app]
+      # - init
+      # - plan:
+      #     requires: [init]
+      # - hold-apply:
+      #     type: approval
+      #     requires: [plan]
+      # - apply:
+      #     requires: [hold-apply]
+      # - plan-destroy:
+      #     requires: [apply, sock-shop, prometheus] 
+      # - hold-destroy:
+      #     type: approval
+      #     requires: [plan-destroy]
+      # - destroy:
+      #     requires: [hold-destroy]
+      # - delete-all-pods:
+      #     requires: [hold-destroy]  
+      # - build-my-app:
+      #     requires: [apply]
+      # - deploy-my-app:
+      #     requires: [build-my-app]
+      # - sock-shop:
+      #     requires: [apply]
+      # - prometheus:
+      #     requires: [apply]
+      - configure-domain
+          # requires: [sock-shop, prometheus, deploy-my-app]
       - plan-domain:
           requires: [configure-domain]
       - hold-apply-domain:
