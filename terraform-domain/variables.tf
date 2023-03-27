@@ -1,9 +1,9 @@
-variable "sock-shop-loadbalancer" {
+variable "encrypted-sock-shop-loadbalancer" {
   description = "The loadbalancer for the sock-shop"
 
 }
 
-variable "voting-app-loadbalancer" {
+variable "encrypted-voting-app-loadbalancer" {
   description = "The loadbalancer for the votingapp"
 
 }

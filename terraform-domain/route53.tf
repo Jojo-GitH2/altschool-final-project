@@ -17,10 +17,10 @@ resource "aws_route53_zone" "altschool_demo_me" {
 # }
 
 resource "aws_route53_record" "sock-shop" {
-  name = "sock-shop.altschool-demo.me"
-  type = "A"
+  name    = "sock-shop.altschool-demo.me"
+  type    = "A"
   zone_id = aws_route53_zone.altschool_demo_me.zone_id
-  
+
   alias {
     name                   = data.aws_lb.sock-shop-loadbalancer.dns_name
     zone_id                = data.aws_lb.sock-shop-loadbalancer.zone_id
@@ -46,13 +46,13 @@ data "aws_elb_hosted_zone_id" "elb_zone_id" {
 #   }
 # }
 
-resource "aws_route53_record" "votingapp" {
+resource "aws_route53_record" "voting-app" {
   zone_id = aws_route53_zone.altschool_demo_me.zone_id
   name    = "vote.altschool-demo.me"
   type    = "A"
   alias {
     name                   = data.aws_lb.voting-app-loadbalancer.dns_name
-    zone_id                = data.aws_lb.sock-shop-loadbalancer.zone_id
+    zone_id                = data.aws_lb.voting-app-loadbalancer.zone_id
     evaluate_target_health = true
   }
 }
