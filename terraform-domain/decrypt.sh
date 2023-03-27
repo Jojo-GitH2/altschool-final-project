@@ -1,0 +1,8 @@
+#!/bin/bash
+
+kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > sock-shop.txt
+kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' > voting-app.txt
+aws kms decrypt --cipher-text-blob sock-shop.txt --output text --query Plaintext | base64 --decode > decrypt-sock-shop.txt
+aws kms decrypt --cipher-text-blob voting-app.txt --output text --query Plaintext | base64 --decode > decrypt-voting-app.txt
+
+# aws kms decrypt --ciphertext-blob fileb://encrypted_test_file --output text --query Plaintext | base64 --decode > decrypted_test_file.txt
