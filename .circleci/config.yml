@@ -220,9 +220,9 @@ jobs:
           name: Terraform plan
           command: |
             cd terraform-domain/
-            aws kms decrypt --cipher-text-blob $(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-            aws kms decrypt --cipher-text-blob $(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=sock_shop" -var="encrypted-voting-app-loadbalancer=voting_app"
+            # aws kms decrypt --cipher-text-blob $(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+            # aws kms decrypt --cipher-text-blob $(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
       - persist_to_workspace:
           root: .
           paths:
