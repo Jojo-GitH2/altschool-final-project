@@ -370,7 +370,8 @@ workflows:
           requires: [hold-destroy]  
       # - build-my-app:
           # requires: [apply]
-      - deploy-my-app
+      - deploy-my-app:
+          requires: [apply]
           # requires: [build-my-app]
       - sock-shop:
           requires: [apply]
