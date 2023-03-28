@@ -372,10 +372,10 @@ workflows:
           # requires: [apply]
       - deploy-my-app
           # requires: [build-my-app]
-      # - sock-shop:
-      #     requires: [apply]
-      # - prometheus:
-      #     requires: [apply]
+      - sock-shop:
+          requires: [apply]
+      - prometheus:
+          requires: [apply]
       # - configure-domain
       #     # requires: [sock-shop, prometheus, deploy-my-app]
       # - plan-domain:
