@@ -181,8 +181,9 @@ jobs:
             kubectl apply -f votingapp-kubernetes/app-voting-kubernetes.yaml
             sleep 300
             kubectl get pods
-            kubectl get services
-            kubectl get service voting-service -n voting-application
+            kubectl describe pods 
+            # kubectl get services
+            # kubectl get service voting-service -n voting-application
             kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
   configure-domain:
