@@ -351,32 +351,32 @@ workflows:
   version: 2
   deploy-apps:
     jobs:
-      - init
-      - plan:
-          requires: [init]
-      - hold-apply:
-          type: approval
-          requires: [plan]
-      - apply:
-          requires: [hold-apply]
-      - plan-destroy:
-          requires: [apply, sock-shop, prometheus] 
-      - hold-destroy:
-          type: approval
-          requires: [plan-destroy]
-      - destroy:
-          requires: [hold-destroy]
-      - delete-all-pods:
-          requires: [hold-destroy]  
+      # - init
+      # - plan:
+      #     requires: [init]
+      # - hold-apply:
+      #     type: approval
+      #     requires: [plan]
+      # - apply:
+      #     requires: [hold-apply]
+      # - plan-destroy:
+      #     requires: [apply, sock-shop, prometheus] 
+      # - hold-destroy:
+      #     type: approval
+      #     requires: [plan-destroy]
+      # - destroy:
+      #     requires: [hold-destroy]
+      # - delete-all-pods:
+      #     requires: [hold-destroy]  
       # - build-my-app:
           # requires: [apply]
-      - deploy-my-app:
-          requires: [apply]
+      - deploy-my-app
+          # requires: [apply]
           # requires: [build-my-app]
-      - sock-shop:
-          requires: [apply]
-      - prometheus:
-          requires: [apply]
+      # - sock-shop:
+          # requires: [apply]
+      # - prometheus:
+          # requires: [apply]
       # - configure-domain
       #     # requires: [sock-shop, prometheus, deploy-my-app]
       # - plan-domain:
