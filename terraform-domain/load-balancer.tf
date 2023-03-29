@@ -1,10 +1,13 @@
-data "aws_elb" "loadbalancers" {
+data "aws_lb" "loadbalancers" {
   for_each = var.loadbalancer-tags
-  filter{
-    name = "tag:kubernetes.io/service-name"
-    # values = ["voting-application/voting-service", "sock-shop/front-end"]
-    values = [each.value]
+
+  tags = {
+   (each.key) = [each.value]
   }
+  #   name = "tag:kubernetes.io/service-name"
+  #   # values = ["voting-application/voting-service", "sock-shop/front-end"]
+  #   values = [each.value]
+  # }
 }
 
 # data "aws_lb" "voting-app-loadbalancer" {

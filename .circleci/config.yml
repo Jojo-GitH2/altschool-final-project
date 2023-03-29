@@ -201,7 +201,7 @@ jobs:
           name: Terraform init
           command: |
             cd terraform-domain/
-            terraform init -input=false -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform init -input=false
       - persist_to_workspace:
           root: .
           paths:
@@ -222,7 +222,7 @@ jobs:
           command: |
             cd terraform-domain/
             bash decrypt.sh
-            terraform plan -out tf-apply -var="encrypted-sock-shop-loadbalancer=<(head -1 n decrypt-sock-shop.txt)" -var="encrypted-voting-app-loadbalancer=<(head -n 1 decrypt-voting-app.txt)"
+            terraform plan -out tf-apply
       - persist_to_workspace:
           root: .
           paths:
@@ -243,7 +243,7 @@ jobs:
           name: Terraform apply
           command: |
             cd terraform-domain/
-            terraform apply -auto-approve tf-apply -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform apply -auto-approve tf-apply
       - persist_to_workspace:
           root: .
           paths:
@@ -263,7 +263,7 @@ jobs:
           name: terraform create destroy plan
           command: |
             cd terraform-domain/
-            terraform plan -destroy -out tf-destroy -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+            terraform plan -destroy -out tf-destroy 
       - persist_to_workspace:
           root: .
           paths:
@@ -283,8 +283,7 @@ jobs:
           name: terraform destroy
           command: |
             cd terraform-domain/
-            terraform apply -auto-approve tf-destroy -var="encrypted-sock-shop-loadbalancer=$(kubectl get service front-end -n sock-shop -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')" -var="encrypted-voting-app-loadbalancer=$(kubectl get service voting-service -n voting-application -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-      
+            terraform apply -auto-approve tf-destroy 
 
   delete-all-pods:
       docker:
@@ -370,26 +369,26 @@ workflows:
       #     requires: [hold-destroy]  
       # - build-my-app:
           # requires: [apply]
-      - deploy-my-app
+      # - deploy-my-app
           # requires: [apply]
           # requires: [build-my-app]
       # - sock-shop:
           # requires: [apply]
       # - prometheus:
           # requires: [apply]
-      # - configure-domain
+      - configure-domain
       #     # requires: [sock-shop, prometheus, deploy-my-app]
-      # - plan-domain:
-      #     requires: [configure-domain]
-      # - hold-apply-domain:
-      #     type: approval
-      #     requires: [plan-domain]
-      # - apply-domain:
-      #     requires: [hold-apply-domain]
-      # - plan-destroy-domain:
-      #     requires: [apply-domain]
-      # - hold-destroy-domain:
-      #     type: approval
-      #     requires: [plan-destroy-domain]
-      # - destroy-domain:
-      #     requires: [hold-destroy-domain]
+      - plan-domain:
+          requires: [configure-domain]
+      - hold-apply-domain:
+          type: approval
+          requires: [plan-domain]
+      - apply-domain:
+          requires: [hold-apply-domain]
+      - plan-destroy-domain:
+          requires: [apply-domain]
+      - hold-destroy-domain:
+          type: approval
+          requires: [plan-destroy-domain]
+      - destroy-domain:
+          requires: [hold-destroy-domain]
