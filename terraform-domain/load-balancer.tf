@@ -6,6 +6,10 @@ data "aws_lbs" "loadbalancers" {
 
 }
 
+output "loadbalancers" {
+  value = data.aws_lbs.loadbalancers
+}
+
 # locals {
 #   filtered_Loadbalancers = [for lb in data.aws_lb.loadbalancers: lb if ]
 # }
