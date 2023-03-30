@@ -2,7 +2,7 @@ data "aws_lb" "loadbalancers" {
   # for_each = var.loadbalancer-tags
   tags = {
     "kubernetes.io/service-name" = "voting-application/voting-service"
-    "kubernetes.io/service-name" = "sock-shop/front-end"
+    # "kubernetes.io/service-name" = "sock-shop/front-end"
   }
 }
 # locals {
