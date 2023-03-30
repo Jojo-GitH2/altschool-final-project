@@ -19,9 +19,13 @@ resource "aws_route53_record" "loadbalancers" {
   for_each = var.subdomains
   name     = each.value
   zone_id  = local.zone_id
-  type     = "CNAME"
-  ttl      = "300"
-  records  = [data.aws_lbs.loadbalancers[each.key].dns_name]
+  type     = "A"
+  # ttl      = "300"
+  alias {
+    name                   = data.aws_lbs.loadbalancers[each.key].dns_name
+    zone_id                = data.aws_lbs.loadbalancers[each.key].zone_id
+    evaluate_target_health = true
+  }
 }
 
 # resource "aws_route53_zone" "votingapp-domain" {
