@@ -3,7 +3,7 @@ data "aws_lbs" "loadbalancers" {
   tags = {
     "kubernetes.io/service-name" = each.value
   }
-  
+
 }
 
 # locals {
