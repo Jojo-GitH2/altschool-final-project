@@ -29,7 +29,3 @@ data "aws_lbs" "loadbalancers" {
 # }
 
 
-# data "aws_lb" "voting-app-loadbalancer" {
-#   # arn = data.aws_kms_secrets.decrypt_arn.plaintext["voting-app-arn"]
-#   dns_name = var.encrypted-voting-app-loadbalancer
-# }
