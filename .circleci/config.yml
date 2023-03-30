@@ -221,7 +221,6 @@ jobs:
           name: Terraform plan
           command: |
             cd terraform-domain/
-            bash decrypt.sh
             terraform plan -out tf-apply
       - persist_to_workspace:
           root: .

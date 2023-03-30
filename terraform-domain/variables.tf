@@ -12,8 +12,8 @@ variable "loadbalancer-tags" {
   description = "The tags for the loadbalancer"
   type        = map(string)
   default = {
-    "kubernetes.io/service-name"  = "sock-shop/front-end"
-    "kubrernetes.io/service-name" = "voting-application/voting-service"
+    "kubernetes.io/service-name" = "sock-shop/front-end"
+    "kubernetes.io/service-name" = "voting-application/voting-service"
   }
 }
 variable "subdomains" {
