@@ -11,7 +11,7 @@ data "aws_lbs" "loadbalancers" {
 # }
 output "load_balancer_dns_names" {
   value = {
-    for service_name, load_balancer in data.aws_lbs.loadbalancers : service_name => load_balancer.dns_name
+    for service_name, load_balancer in data.aws_lbs.loadbalancers : service_name => load_balancer.arns
   }
 }
 # locals {
