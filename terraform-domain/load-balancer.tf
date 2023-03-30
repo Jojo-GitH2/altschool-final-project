@@ -11,7 +11,7 @@ data "aws_lbs" "loadbalancers" {
 # }
 output "load_balancer_dns_names" {
   value = {
-    for service_name, load_balancer in data.aws_lbs.loadbalancers : service_name => load_balancer.arns
+    for service_name, load_balancer in data.aws_lbs.loadbalancers : service_name => load_balancer.tags["kubernetes.io/service-name"]
   }
 }
 # locals {
