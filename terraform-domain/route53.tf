@@ -12,7 +12,7 @@ resource "aws_route53_zone" "altschool_demo_me" {
 }
 
 resource "aws_route53_record" "loadbalancers" {
-  for_each = { for lb in data.aws_lb.loadbalancers : lb.arn => lb.dns_name }
+  for_each = { for lb in data.aws_lbs.loadbalancers : lb.arn => lb.dns_name }
   zone_id  = aws_route53_zone.altschool_demo_me.zone_id
   name     = var.subdomains[each.value.tags.KubernetesServiceName]
   type     = "CNAME"

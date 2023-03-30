@@ -1,10 +1,14 @@
-data "aws_lb" "loadbalancers" {
-  # for_each = var.loadbalancer-tags
+data "aws_lbs" "loadbalancers" {
+  for_each = var.loadbalancer-tags
   tags = {
-    "kubernetes.io/service-name" = "voting-application/voting-service"
-    # "kubernetes.io/service-name" = "sock-shop/front-end"
+    "kubernetes.io/service-name" = each.value
   }
+  
 }
+
+# locals {
+#   filtered_Loadbalancers = [for lb in data.aws_lb.loadbalancers: lb if ]
+# }
 # locals {
 #     filtered_Loadbalancers = {for lb in data.aws_lb.loadbalancers: lb
 #       if contains(keys(lb.tags), "kubernetes.io/service-name") && (lb.tags["kubernetes.io/service-name"] == "voting-application/voting-service" || lb.tags["kubernetes.io/service-name"] == "sock-shop/front-end") => lb
