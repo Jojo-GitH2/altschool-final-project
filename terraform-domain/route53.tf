@@ -45,7 +45,7 @@ resource "aws_route53_record" "sock-shop-record" {
   type    = "A"
 
   alias {
-    name                   = data.aws_lb.sock-shop-loadbalancer.dns_name
+    name                   = data.aws_elb.sock-shop-loadbalancer.dns_name
     zone_id                = data.aws_elb_hosted_zone_id.elb_zone_id.id
     evaluate_target_health = true
   }

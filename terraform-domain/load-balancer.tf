@@ -6,7 +6,8 @@
 
 # }
 
-data "aws_lb" "sock-shop-loadbalancer" {
+data "aws_elb" "sock-shop-loadbalancer" {
+  name = data.aws_elb.sock-shop-loadbalancer.dns_name
   tags = {
     "kubernetes.io/service-name" = "sock-shop/front-end"
   }
