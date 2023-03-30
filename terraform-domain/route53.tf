@@ -21,7 +21,7 @@ resource "aws_route53_record" "loadbalancers" {
   zone_id  = local.zone_id
   type     = "CNAME"
   ttl      = "300"
-  records  = [each.value.dns_name]
+  records  = [data.aws_lbs.loadbalancers[each.key].dns_name]
 }
 
 # resource "aws_route53_zone" "votingapp-domain" {
