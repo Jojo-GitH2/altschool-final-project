@@ -6,10 +6,14 @@ data "aws_lbs" "loadbalancers" {
 
 }
 
-output "loadbalancers" {
-  value = data.aws_lbs.loadbalancers
+# output "loadbalancers" {
+#   value = data.aws_lbs.loadbalancers
+# }
+output "load_balancer_dns_names" {
+  value = {
+    for service_name, load_balancer in data.aws_lbs.loadbalancers : service_name => load_balancer.dns_name
+  }
 }
-
 # locals {
 #   filtered_Loadbalancers = [for lb in data.aws_lb.loadbalancers: lb if ]
 # }
