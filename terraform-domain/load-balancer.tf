@@ -1,22 +1,22 @@
-# data "aws_lbs" "loadbalancers" {
-#   for_each = var.loadbalancer-tags
+data "aws_lbs" "loadbalancers" {
+  for_each = var.loadbalancer-tags
+  tags = {
+    "kubernetes.io/service-name" = each.value
+  }
+
+}
+
+# data "aws_elb" "sock-shop-loadbalancer" {
+#   name = 
 #   tags = {
-#     "kubernetes.io/service-name" = each.value
+#     "kubernetes.io/service-name" = "sock-shop/front-end"
 #   }
-
 # }
-
-data "aws_elb" "sock-shop-loadbalancer" {
-  name = data.aws_elb.sock-shop-loadbalancer.dns_name
-  tags = {
-    "kubernetes.io/service-name" = "sock-shop/front-end"
-  }
-}
-data "aws_lb" "voting-app-loadbalancer" {
-  tags = {
-    "kubernetes.io/service-name" = "voting-application/voting-service"
-  }
-}
+# data "aws_lb" "voting-app-loadbalancer" {
+#   tags = {
+#     "kubernetes.io/service-name" = "voting-application/voting-service"
+#   }
+# }
 # output "loadbalancers" {
 #   value = data.aws_lbs.loadbalancers
 # }
