@@ -34,6 +34,7 @@ The project requires the following setup:
 ### Deploy Pipeline 
 
 > [config.yml](.circleci/config.yml)
+> 
 > [terraform-kubernetes](terraform-kubernetes/main.tf)
 
 The deployment is orchestrated using Kubernetes and an IaaC approach with Terraform. The CI/CD pipeline is set up with CircleCI, ensuring automated and consistent implementations.
